@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 11:03:06 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/25 14:10:50 by eieong           ###   ########.fr       */
+/*   Updated: 2025/02/28 13:36:26 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,14 @@ t_bool	parse_args(t_pipex *pipex, int ac, char **av)
 {
 	if (ac < 5)
 		return (ft_exit_err(pipex, 1));
-	if (access(av[1], F_OK) == -1)
-		return (ft_exit_err(pipex, 3));
-	if (access(av[1], R_OK) == -1)
-		return (ft_exit_err(pipex, 5));
-	else
-		pipex->in_fd = open(av[1], O_RDONLY, 0644);
+	pipex->in_fd = open(av[1], O_RDONLY, 0644);
+	if (pipex->in_fd == -1)
+		perror("in_fd");
 	pipex->out_fd = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (pipex->out_fd == -1)
-		return (ft_exit_err(pipex, 5));
+		perror("out_fd");
+	if (pipex->in_fd == -1 || pipex->out_fd == -1)
+		return (false);
 	pipex->cmd_count = ac - 3;
 	return (true);
 }

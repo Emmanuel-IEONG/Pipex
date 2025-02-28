@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 11:03:06 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/21 17:29:19 by eieong           ###   ########.fr       */
+/*   Updated: 2025/02/28 11:38:21 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,22 @@ int	main(int ac, char **av, char **envp)
 	int		i;
 
 	if (!envp[0])
-		return (ft_error(6), 1);
+		return (ft_error(4), 1);
 	pipex = malloc(sizeof(t_pipex));
 	if (!pipex)
 		return (EXIT_FAILURE);
 	init_pipex(pipex);
 	if (!parse_args(pipex, ac, av))
-		return (EXIT_FAILURE);
+		return (ft_cleanup(pipex), EXIT_FAILURE);
 	if (!parse_cmd_args(pipex, ac, av))
-		return (ft_exit_err(pipex, 7));
+		return (ft_exit_err(pipex, 5));
 	if (!parse_cmd_paths(pipex, ac, envp))
-		return (ft_exit_err(pipex, 7));
+		return (ft_exit_err(pipex, 5));
 	i = -1;
 	while (++i < pipex->cmd_count)
 	{
 		if (!child_process(pipex, envp, i))
-			return (ft_exit_err(pipex, 4));
+			return (ft_exit_err(pipex, 3));
 	}
 	i = -1;
 	while (++i < pipex->cmd_count)

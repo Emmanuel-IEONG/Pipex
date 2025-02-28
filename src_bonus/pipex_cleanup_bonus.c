@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:40:48 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/21 17:17:31 by eieong           ###   ########.fr       */
+/*   Updated: 2025/02/28 12:32:46 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,10 @@ void	ft_error(int err)
 	else if (err == 2)
 		ft_putstr_fd("pipex error : Command not found\n", 2);
 	else if (err == 3)
-		ft_putstr_fd("pipex error : No such file or directory\n", 2);
-	else if (err == 4)
 		ft_putstr_fd("pipex error : Pipe or fork failed\n", 2);
-	else if (err == 5)
-		ft_putstr_fd("pipex error : Permission denied\n", 2);
-	else if (err == 6)
+	else if (err == 4)
 		ft_putstr_fd("Cannot execute binary file\n", 2);
-	else if (err == 7)
+	else if (err == 5)
 		ft_putstr_fd("Malloc failed\n", 2);
 }
 
