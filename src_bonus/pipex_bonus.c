@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 11:03:06 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/28 16:01:24 by eieong           ###   ########.fr       */
+/*   Updated: 2025/02/28 16:09:53 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_bool	pipe_and_fork(t_pipex *pipex, int pipefd[2], pid_t *pid, int index)
 {
 	*pid = fork();
 	if (*pid < 0)
-		return(ft_close_fd(pipex, pipefd), false);
+		return (ft_close_fd(pipex, pipefd), false);
 	if (*pid == 0)
 	{
 		if (index == 0)

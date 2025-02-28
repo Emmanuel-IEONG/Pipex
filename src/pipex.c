@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 11:03:06 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/28 11:38:21 by eieong           ###   ########.fr       */
+/*   Updated: 2025/02/28 16:09:53 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,27 @@
 
 t_bool	pipe_and_fork(t_pipex *pipex, int pipefd[2], pid_t *pid, int index)
 {
-	if (pipe(pipefd) == -1)
-		return (false);
 	*pid = fork();
 	if (*pid < 0)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		return (false);
-	}
+		return (ft_close_fd(pipex, pipefd), false);
 	if (*pid == 0)
 	{
 		if (index == 0)
+		{
 			dup2(pipex->in_fd, STDIN_FILENO);
-		if (index == pipex->cmd_count - 1)
-			dup2(pipex->out_fd, STDOUT_FILENO);
-		else
 			dup2(pipefd[1], STDOUT_FILENO);
+			ft_close_fd(pipex, pipefd);
+		}
+		else if (index == pipex->cmd_count - 1)
+		{
+			dup2(pipex->out_fd, STDOUT_FILENO);
+			ft_close_fd(pipex, pipefd);
+		}
+		else
+		{
+			dup2(pipefd[1], STDOUT_FILENO);
+			ft_close_fd(pipex, pipefd);
+		}
 	}
 	else
 		dup2(pipefd[0], STDIN_FILENO);
@@ -42,6 +46,8 @@ t_bool	child_process(t_pipex *pipex, char **envp, int index)
 	int		pipefd[2];
 	pid_t	pid;
 
+	if (pipe(pipefd) == -1)
+		return (false);
 	if (!pipe_and_fork(pipex, pipefd, &pid, index))
 		return (false);
 	if (pid == 0)
