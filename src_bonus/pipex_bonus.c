@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 11:03:06 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/28 16:09:53 by eieong           ###   ########.fr       */
+/*   Updated: 2025/03/03 12:08:51 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ t_bool	pipe_and_fork(t_pipex *pipex, int pipefd[2], pid_t *pid, int index)
 	{
 		if (index == 0)
 		{
+			if (pipex->in_fd == -1)
+			{
+				ft_close_fd(pipex, pipefd);
+				ft_cleanup(pipex);
+				exit (EXIT_FAILURE);
+			}
 			dup2(pipex->in_fd, STDIN_FILENO);
 			dup2(pipefd[1], STDOUT_FILENO);
-			ft_close_fd(pipex, pipefd);
 		}
 		else if (index == pipex->cmd_count - 1)
-		{
 			dup2(pipex->out_fd, STDOUT_FILENO);
-			ft_close_fd(pipex, pipefd);
-		}
 		else
-		{
 			dup2(pipefd[1], STDOUT_FILENO);
-			ft_close_fd(pipex, pipefd);
-		}
+		ft_close_fd(pipex, pipefd);
 	}
 	else
 		dup2(pipefd[0], STDIN_FILENO);
@@ -86,8 +86,7 @@ int	main(int ac, char **av, char **envp)
 	if (!pipex)
 		return (EXIT_FAILURE);
 	init_pipex(pipex);
-	if (!parse_args(pipex, ac, av))
-		return (ft_cleanup(pipex), EXIT_FAILURE);
+	parse_args(pipex, ac, av);
 	if (!parse_cmd_args(pipex, ac, av))
 		return (ft_exit_err(pipex, 5));
 	if (!parse_cmd_paths(pipex, ac, envp))
