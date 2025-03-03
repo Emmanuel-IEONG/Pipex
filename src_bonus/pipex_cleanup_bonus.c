@@ -6,7 +6,7 @@
 /*   By: eieong <eieong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:40:48 by eieong            #+#    #+#             */
-/*   Updated: 2025/02/28 12:32:46 by eieong           ###   ########.fr       */
+/*   Updated: 2025/03/03 11:40:36 by eieong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	ft_close_fd(t_pipex *pipex, int pipefd[2])
 {
 	close(pipefd[0]);
 	close(pipefd[1]);
-	close(pipex->in_fd);
-	close(pipex->out_fd);
+	if (pipex->in_fd != -1)
+		close(pipex->in_fd);
+	if (pipex->out_fd != -1)
+		close(pipex->out_fd);
 }
 
 void	ft_error(int err)
